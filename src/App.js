@@ -1,24 +1,41 @@
-import logo from './logo.svg';
-import './App.css';
+import { Routes, Route } from 'react-router-dom';
+import Navigation from './Navigation';
+import Home from './Home';
+import Dashboard from './Dashboard';
+import Admin from './Admin';
+import NoMatch from './NoMatch';
+import ProtectedRoute from './ProtectedRoute';
+import { AuthProvider } from './contexts/AuthProvider';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <AuthProvider>
+      <h1>React Router</h1>
+
+      <Navigation />
+
+      <Routes>
+        <Route index element={<Home />} />
+        <Route path='home' element={<Home />} />
+        <Route
+          path='dashboard'
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path='admin'
+          element={
+            <ProtectedRoute>
+              <Admin />
+            </ProtectedRoute>
+          }
+        />
+        <Route path='*' element={<NoMatch />} />
+      </Routes>
+    </AuthProvider>
   );
 }
 
